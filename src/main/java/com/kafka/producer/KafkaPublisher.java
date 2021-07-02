@@ -1,6 +1,6 @@
 package com.kafka.producer;
 
-import com.kafka.model.KafkaConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -8,33 +8,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.util.UUID;
+
 @Service
+@Slf4j
 public class KafkaPublisher {
 
-    private final KafkaConfig kafkaConfig;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate kafkaTemplate;
 
     @Autowired
-    KafkaPublisher(KafkaConfig kafkaConfig, KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaConfig = kafkaConfig;
+    KafkaPublisher(KafkaTemplate kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(String msg) {
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(kafkaConfig.getOutboundTopic(), msg);
+    public <T> void sendMessage(T record, String topicName) {
+        String key = UUID.randomUUID().toString();
+        ListenableFuture<SendResult<String, T>> future = kafkaTemplate.send(topicName, key, record);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+        future.addCallback(new ListenableFutureCallback<SendResult<String, T>>() {
 
             @Override
-            public void onSuccess(SendResult<String, String> result) {
-                System.out.println("Sent message=[" + msg +
+            public void onSuccess(SendResult<String, T> result) {
+                log.info("Sent message=[" + record +
                         "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                System.out.println("Unable to send message=["
-                        + msg + "] due to : " + ex.getMessage());
+                log.error("Unable to send message=["
+                        + record + "] due to : " + ex.getMessage());
             }
         });
     }

@@ -1,0 +1,10 @@
+{
+   "namespace": "com.kafka.model",
+   "type": "record",
+   "name": "Student",
+   "fields": [
+      {"name": "id",  "type": "long"},
+      {"name": "name", "type": ["null","string"], "default":null},
+      {"name": "roll_no", "type": ["null","long"], "default":null}
+   ]
+ }

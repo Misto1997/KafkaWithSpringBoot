@@ -14,11 +14,11 @@ public class KafkaConfig implements Serializable {
     @Value("${kafka.bootstrap.servers:localhost:9092}")
     private String bootStrapServers;
 
-    @Value("${kafka.outbound.topic:test_topic}")
-    private String outboundTopic;
+    @Value("${kafka.outbound.student.topic:student}")
+    private String outboundStudentTopic;
 
-    @Value("${kafka.consumer.group:test_group}")
-    private String consumerGroup;
+    @Value("${kafka.outbound.teacher.topic:teacher}")
+    private String outboundTeacherTopic;
 
     @Value("${kafka.enable.auto.commit:true}")
     private String enableAutoCommit;
@@ -46,4 +46,7 @@ public class KafkaConfig implements Serializable {
 
     @Value("${kafka.max.request.size:5028576}")
     private String maxRequestSize;
+
+    @Value("${schema.registry.url:http://localhost:8081}")
+    private String schemaRegistryUrl;
 }
