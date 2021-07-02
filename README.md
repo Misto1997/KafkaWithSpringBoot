@@ -49,22 +49,24 @@ Considering ACID properties and some mechanism to handle corrupt data we can use
             5.  Connect : port-8083
             6.  KsqlDB : port-8088
    
-3. created JDBC Sink connector from collection mentioned above for teacher and student topic.
+3. Create JDBC Sink connector from collection mentioned above for teacher and student topic.
 
 4. Run Spring boot application
 
-5. Send data from API from above mentioned collection for teacher and student.
+5. Send data via API from above mentioned collection for teacher and student.
 
-6. if data is compliant, you can see data in your DB(school) and if data is not compliant then in DLQ topic.
+6. if data is compliant, you can see data in your DB(school) and if data is not compliant then in DLQ(Dead Letter Queue) topic.
 ```
 
 ## Note
 ```
-    -   You can use kafka connect either in Standalone mode(suitable for dev/testing) or in Distributed mode(suitable for Production) by changing config accordingly.
-    -   this project runs on Standalone mode and locally  personal system. You can change config accordingly to make it distributed and live.
-    -   You can edit default ports to your desired ports via editing respective property file.
+    -   You can change Sink as per your requirement. In this demo i have used JDBC sink Connector to dumb data to MySQL DB.
+    -   This Demo is not intended to showcase Kafka's other feature and DLQ data handling, you can explore that own your own.
+    -   You can use Kafka Connect either in Standalone mode(suitable for dev/testing) or in Distributed mode(suitable for Production) by changing config accordingly.
+    -   This project runs on Standalone mode and in local system. You can change config accordingly to make it distributed and live.
+    -   You can edit default ports to your desired ports via editing respective property files.
     -   You can explore other API's in Collection to get more details about connector's detail.
-    -   Student and Teacher classes are auto generated from AVRO schema(under resource sfolder) via packaging the project.
+    -   Student and Teacher classes are auto generated from AVRO schema(under resources folder) via packaging the project.
 ```
 
 ## References
